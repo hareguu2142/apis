@@ -1,15 +1,23 @@
-// Example URL: /api/users
-let users = [
-  { id: 1, name: 'Alice' },
-  { id: 2, name: 'Bob' },
-
-];
+// Example URL: /api/users?id=1&name=Alice
 
 module.exports = (req, res) => {
   const { method } = req;
+  const { id, name } = req.query;
 
   if (method === 'GET') {
-    res.status(200).json(users);
+    if (id || name) {
+      const user = users.find(user => 
+        (id && user.id === parseInt(id)) || 
+        (name && user.name.toLowerCase() === name.toLowerCase())
+      );
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ error: 'User not found' });
+      }
+    } else {
+      res.status(200).json(users);
+    }
   } else if (method === 'POST') {
     const { name } = req.body;
     if (!name) {
