@@ -2,7 +2,20 @@
 let users = [];
 
 module.exports = (req, res) => {
+  // CORS 헤더 설정
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
   const { method } = req;
+
+  // OPTIONS 요청 처리
+  if (method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // 기존 로직
   const { id, name, age } = req.query;
 
   if (method === 'GET') {
@@ -25,7 +38,7 @@ module.exports = (req, res) => {
     users.push(newUser);
     res.status(201).json(newUser);
   } else {
-    res.setHeader('Allow', ['GET', 'POST']);
+    res.setHeader('Allow', ['GET', 'POST', 'OPTIONS']);
     res.status(405).end(`Method ${method} Not Allowed`);
   }
 };
