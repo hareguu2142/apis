@@ -1,4 +1,8 @@
 // Example URL: /api/users?id=1&name=Alice
+let users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+];
 
 module.exports = (req, res) => {
   const { method } = req;
